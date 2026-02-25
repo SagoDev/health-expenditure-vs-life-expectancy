@@ -16,17 +16,17 @@ PROCESSED_CLEAN_PATH = "data/processed/cleaned_indicators/"
 def clean_worldbank_df(df: pd.DataFrame) -> pd.DataFrame:
     """
     Limpia un DataFrame de indicador del Banco Mundial.
-    
+
     Este proceso incluye:
     - Selección de columnas relevantes
     - Renombrado de columnas a nombres más descriptivos
     - Conversión de tipos de datos
     - Eliminación de valores nulos
     - Ordenamiento de los datos
-    
+
     Args:
         df: DataFrame raw (sin procesar) obtenido de la API del Banco Mundial
-        
+
     Returns:
         DataFrame limpio y estructurado listo para análisis
     """
@@ -66,10 +66,10 @@ def clean_worldbank_df(df: pd.DataFrame) -> pd.DataFrame:
 def clean_all_indicators(indicators: Dict[str, str]) -> Dict[str, pd.DataFrame]:
     """
     Carga todos los archivos CSV crudos y aplica limpieza a cada indicador.
-    
+
     Args:
         indicators: Diccionario con los nombres de los indicadores a procesar
-        
+
     Returns:
         Diccionario con los nombres de indicadores como claves
         y DataFrames limpios como valores
@@ -98,11 +98,11 @@ def clean_all_indicators(indicators: Dict[str, str]) -> Dict[str, pd.DataFrame]:
 def save_cleaned_indicators(cleaned_data: Dict[str, pd.DataFrame]) -> None:
     """
     Guarda los DataFrames de indicadores limpiados en el directorio procesado.
-    
+
     Args:
         cleaned_data: Diccionario con DataFrames limpiados por indicador
     """
-    
+
     # Crear el directorio de indicadores limpiados si no existe
     os.makedirs(PROCESSED_CLEAN_PATH, exist_ok=True)
 

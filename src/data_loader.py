@@ -13,14 +13,14 @@ from src.config import BASE_URL, RAW_DATA_PATH, START_YEAR, END_YEAR
 def fetch_indicator(indicator_code: str) -> pd.DataFrame:
     """
     Obtiene datos de un indicador específico del Banco Mundial.
-    
+
     Args:
         indicator_code: Código del indicador en la API del Banco Mundial
                         (ej: 'SP.DYN.LE00.IN' para esperanza de vida)
-    
+
     Returns:
         DataFrame de pandas con los datos del indicador
-        
+
     Raises:
         Exception: Si ocurre un error HTTP o de la API
     """
@@ -67,12 +67,12 @@ def fetch_indicator(indicator_code: str) -> pd.DataFrame:
 def save_raw_data(df: pd.DataFrame, indicator_name: str) -> None:
     """
     Guarda los datos crudos (sin procesar) en el disco.
-    
+
     Args:
         df: DataFrame con los datos a guardar
         indicator_name: Nombre del indicador (se usará para el nombre del archivo)
     """
-    
+
     # Asegurarse de que el directorio de datos crudos exista
     # exist_ok=True evita errores si el directorio ya existe
     os.makedirs(RAW_DATA_PATH, exist_ok=True)
@@ -90,18 +90,18 @@ def save_raw_data(df: pd.DataFrame, indicator_name: str) -> None:
 def extract_and_store(indicators: Dict[str, str]) -> None:
     """
     Orchestrates la extracción de todos los indicadores y los guarda localmente.
-    
+
     Args:
         indicators: Diccionario con nombres y códigos de indicadores
                     (mapeado desde src.config.INDICATORS)
     """
-    
+
     # Iterar sobre cada indicador definido en la configuración
     for name, code in indicators.items():
         print(f"Obteniendo {name}...")
-        
+
         # Obtener los datos del indicador desde la API
         df = fetch_indicator(code)
-        
+
         # Guardar los datos crudos en el disco
         save_raw_data(df, name)
