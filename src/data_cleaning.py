@@ -6,11 +6,7 @@ Proporciona funciones para transformar y preparar los datos crudos para el anál
 import os
 from typing import Dict
 import pandas as pd
-from src.config import RAW_DATA_PATH
-
-
-# Ruta del directorio donde se almacenarán los datos limpiados
-PROCESSED_CLEAN_PATH = "data/processed/cleaned_indicators/"
+from src.config import RAW_DATA_PATH, PROCESSED_CLEAN_PATH, FINAL_DATA_PATH
 
 
 def clean_worldbank_df(df: pd.DataFrame) -> pd.DataFrame:
@@ -115,3 +111,77 @@ def save_cleaned_indicators(cleaned_data: Dict[str, pd.DataFrame]) -> None:
         df.to_csv(file_path, index=False)
 
     print("Todos los indicadores limpiados guardados exitosamente.")
+
+
+def build_final_dataset(cleaned_data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
+    """
+    Combina los indicadores limpiados en un único dataset basado en país-año.
+
+    Esta función realiza un merge (unión) de todos los DataFrames de indicadores
+    utilizando las columnas 'country', 'country_code' y 'year' como clave.
+    El resultado es un dataset donde cada fila representa un país en un año específico
+    con todos los indicadores disponibles para ese registro.
+
+    Args:
+        cleaned_data: Diccionario con DataFrames limpiados por indicador
+
+    Returns:
+        DataFrame combinado con todos los indicadores mergeados
+
+    Raises:
+        ValueError: Si se detectan duplicados en la clave país-año
+    """
+
+    # DataFrame que almacenará el resultado acumulado del merge
+    merged_df = None
+
+    # Iterar sobre cada indicador en el diccionario de datos limpiados
+    for name, df in cleaned_data.items():
+        # Renombrar la columna 'value' al nombre del indicador
+        # Esto evita conflictos cuando se hace el merge
+        df = df.rename(columns={"value": name})
+
+        # Si es el primer indicador, inicializar el DataFrame mergeado
+        if merged_df is None:
+            merged_df = df
+        else:
+            # Para indicadores posteriores, hacer merge con el DataFrame existente
+            # how='inner' mantiene solo las filas que existen en ambos DataFrames
+            # Esto asegura que solo tengamos registros completos
+            merged_df = merged_df.merge(
+                df, on=["country", "country_code", "year"], how="inner"
+            )
+
+    # Validación: verificar si hay duplicados en la clave primaria (country_code + year)
+    # La clave primaria no debe tener duplicados para evitar inconsistencias
+    duplicates = merged_df.duplicated(subset=["country_code", "year"]).sum()
+
+    # Si hay duplicados, lanzar un error para notificar al usuario
+    if duplicates > 0:
+        raise ValueError(f"Se detectaron filas duplicadas país-año: {duplicates}")
+
+    # Ordenar el DataFrame final por código de país y año
+    # Reiniciar el índice después de las transformaciones
+    merged_df = merged_df.sort_values(["country_code", "year"]).reset_index(drop=True)
+
+    return merged_df
+
+
+def save_final_dataset(df: pd.DataFrame) -> None:
+    """
+    Guarda el dataset final combinado en el directorio de datos procesados.
+
+    Args:
+        df: DataFrame final con todos los indicadores mergeados
+    """
+
+    # Crear el directorio para el dataset final si no existe
+    os.makedirs(FINAL_DATA_PATH, exist_ok=True)
+
+    # Construir la ruta completa del archivo CSV
+    file_path = os.path.join(FINAL_DATA_PATH, "final_dataset.csv")
+
+    # Guardar el DataFrame como CSV sin índice
+    df.to_csv(file_path, index=False)
+
+    print("Dataset final guardado exitosamente.")
