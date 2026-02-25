@@ -23,3 +23,9 @@ END_YEAR = 2023
 
 # Ruta del directorio donde se almacenarán los datos crudos (sin procesar)
 RAW_DATA_PATH = "data/raw/"
+
+# Ruta del directorio donde se almacenarán los datos procesados (limpios)
+PROCESSED_CLEAN_PATH = "data/processed/cleaned_indicators/"
+
+# Ruta del directorio donde se almacenarán los datos finales listos para análisis o visualización
+FINAL_DATA_PATH = "data/processed/final/"
