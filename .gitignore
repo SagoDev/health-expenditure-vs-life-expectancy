@@ -4,6 +4,9 @@ test_files/
 run_tests.py
 pytest.ini
 
+# datos extraidos
+data/
+
 # Archivos de compilación y empaquetado
 build/
 dist/
