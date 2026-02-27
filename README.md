@@ -1,47 +1,120 @@
-# health-expenditure-vs-life-expectancy
+# Gasto en Salud vs Esperanza de Vida
+**Un estudio analítico utilizando datos abiertos del Banco Mundial**
 
-# World Bank Health Expenditure Analysis
+## 📌 Descripción del Proyecto
 
-## 📌 What is this project about?
+Este proyecto analiza la relación entre el gasto en salud y los resultados de salud
+en diferentes países utilizando datos públicos del Banco Mundial.
 
-This project analyzes the relationship between public health expenditure and key health outcomes using open data from the World Bank.
+El objetivo no solo es identificar correlaciones, sino comprender:
+- Cómo el gasto en salud se relaciona con la esperanza de vida
+- Si mayor gasto siempre conduce a mejores resultados
+- Si el impacto de la inversión en salud es inmediato o retrasado
+- Cómo difiere la eficiencia entre países
 
-Specifically, it explores whether higher health spending per capita is associated with improvements in:
-
-- Life expectancy at birth  
-- Infant mortality rate  
-
-The analysis integrates multiple macroeconomic indicators to evaluate how public investment in healthcare correlates with measurable population health outcomes across countries and over time.
-
----
-
-## 🎯 What question does it aim to answer?
-
-> Does higher public health expenditure lead to better national health outcomes?
-
-Additionally:
-
-- Is the relationship consistent across countries?
-- Does economic context (e.g., GDP per capita) influence this relationship?
-- Are some countries more “efficient” in converting health spending into health improvements?
+El proyecto está diseñado como un pipeline de datos reproducible y modular
+con un fuerte enfoque analítico.
 
 ---
 
-## 🧠 Why does this matter?
+## 🧠 Preguntas Clave
 
-Understanding the relationship between government health spending and public health outcomes helps:
-
-- Evaluate the effectiveness of public policy
-- Compare health system performance globally
-- Identify patterns in healthcare investment efficiency
-- Support data-driven decision-making in public economics
+- ¿Mayor gasto en salud lleva a mayor esperanza de vida?
+- ¿Hay rendimientos decrecientes del gasto en salud?
+- ¿Países con gasto similar logran resultados diferentes?
+- ¿El impacto de la inversión en salud es inmediato o rezagado?
 
 ---
 
-## 📊 Data Source
+## 🔄 Pipeline de Datos
 
-All data used in this project comes from the World Bank Open Data API, ensuring transparency, reproducibility, and reliability.
+1. **Extracción**
+   - Datos obtenidos de la API del Banco Mundial
+   - Múltiples indicadores descargados independientemente
+
+2. **Limpieza**
+   - Normalización estructural
+   - Eliminación de entidades inválidas o agregadas
+   - Granularidad consistente país-año
+
+3. **Integración**
+   - Indicadores combinados en un único dataset analítico
+   - Clave primaria: `(country_code, year)`
+
+4. **Ingeniería de Características**
+   - Características temporales (cambio anual, variables rezagadas)
+   - Transformaciones logarítmicas para escala económica
+   - Indicadores de eficiencia
+
+5. **Análisis Exploratorio**
+   - EDA basado en hipótesis
+   - Un notebook por hipótesis
 
 ---
 
-This project focuses on analytical rigor, clean data integration, and evidence-based interpretation of global health indicators.
+## 📊 Fuentes de Datos
+
+- API de Datos Abiertos del Banco Mundial  
+  Indicadores utilizados:
+  - Esperanza de vida al nacer
+  - Gasto en salud (% del PIB)
+  - Tasa de mortalidad infantil
+  - PIB per cápita
+
+---
+
+## 📈 Enfoque Analítico
+
+El análisis está basado en hipótesis en lugar de ser puramente descriptivo.
+
+Cada hipótesis se explora utilizando:
+- Visualizaciones dirigidas
+- Ingeniería de características contextual
+- Conclusiones analíticas claras
+- Limitaciones explícitas
+
+---
+
+## ⚠️ Limitaciones
+
+- Solo datos observacionales (sin inferencia causal)
+- Valores faltantes para algunos países-años
+- Sin control de factores institucionales o de política
+- Datos agregados a nivel nacional
+
+---
+
+## 🧪 Cómo Ejecutar el Pipeline
+
+```bash
+pip install -r requirements.txt
+python main.py
+```
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
+├── main.py                 # Script principal del pipeline
+├── src/
+│   ├── config.py          # Configuración y constantes
+│   ├── data_loader.py     # Extracción de datos de la API
+│   ├── data_cleaning.py  # Limpieza y merge de datos
+│   ├── feature_engineering.py  # Creación de features
+│   ├── analysis.py       # Análisis estadístico
+│   └── visualization.py  # Generación de gráficos
+├── data/
+│   ├── raw/              # Datos crudos de la API
+│   └── processed/        # Datos procesados
+└── README.md
+```
+
+---
+
+## 📦 Dependencias
+
+- pandas
+- numpy
+- requests
+- matplotlib / seaborn (para visualización)
