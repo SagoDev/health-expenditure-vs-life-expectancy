@@ -113,7 +113,7 @@ def save_cleaned_indicators(cleaned_data: Dict[str, pd.DataFrame]) -> None:
     print("Todos los indicadores limpiados guardados exitosamente.")
 
 
-def build_final_dataset(cleaned_data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
+def build_merged_dataset(cleaned_data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
     """
     Combina los indicadores limpiados en un único dataset basado en país-año.
 
@@ -167,7 +167,7 @@ def build_final_dataset(cleaned_data: Dict[str, pd.DataFrame]) -> pd.DataFrame:
     return merged_df
 
 
-def save_final_dataset(df: pd.DataFrame) -> None:
+def save_dataset(df: pd.DataFrame, filename: str) -> None:
     """
     Guarda el dataset final combinado en el directorio de datos procesados.
 
@@ -179,9 +179,9 @@ def save_final_dataset(df: pd.DataFrame) -> None:
     os.makedirs(FINAL_DATA_PATH, exist_ok=True)
 
     # Construir la ruta completa del archivo CSV
-    file_path = os.path.join(FINAL_DATA_PATH, "final_dataset.csv")
+    file_path = os.path.join(FINAL_DATA_PATH, filename)
 
     # Guardar el DataFrame como CSV sin índice
     df.to_csv(file_path, index=False)
 
-    print("Dataset final guardado exitosamente.")
+    print(f"Dataset {filename} guardado exitosamente.")

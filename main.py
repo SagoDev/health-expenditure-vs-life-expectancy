@@ -5,9 +5,10 @@ from src.data_loader import extract_and_store
 from src.data_cleaning import (
     clean_all_indicators,
     save_cleaned_indicators,
-    build_final_dataset,
-    save_final_dataset,
+    build_merged_dataset,
+    save_dataset,
 )
+from src.feature_engineering import apply_feature_engineering
 
 
 def main():
@@ -22,14 +23,19 @@ def main():
     # 3️⃣ Save cleaned indicators
     save_cleaned_indicators(cleaned_data)
 
-    # 4️⃣ Build final dataset
-    final_df = build_final_dataset(cleaned_data)
+    # 4️⃣ Build merged dataset
+    final_df = build_merged_dataset(cleaned_data)
 
-    # 5️⃣ Save final dataset
-    save_final_dataset(final_df)
+    # 5️⃣ Save merged dataset
+    save_dataset(final_df, "final_dataset.csv")
 
     # 6️⃣ Feature engineering (next step)
-    # 7️⃣ Analysis
+    enriched_df = apply_feature_engineering(final_df)
+
+    # 7️⃣ Save enriched dataset
+    save_dataset(enriched_df, "final_enriched_dataset.csv")
+
+    #  Analysis
 
 
 if __name__ == "__main__":
