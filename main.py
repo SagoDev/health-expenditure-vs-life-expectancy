@@ -24,18 +24,16 @@ def main():
     save_cleaned_indicators(cleaned_data)
 
     # 4️⃣ Build merged dataset
-    final_df = build_merged_dataset(cleaned_data)
+    merged_df = build_merged_dataset(cleaned_data)
 
     # 5️⃣ Save merged dataset
-    save_dataset(final_df, "final_dataset.csv")
+    save_dataset(merged_df, "merged_dataset.csv")
 
     # 6️⃣ Feature engineering (next step)
-    enriched_df = apply_feature_engineering(final_df)
+    enriched_df = apply_feature_engineering(merged_df)
 
     # 7️⃣ Save enriched dataset
     save_dataset(enriched_df, "final_enriched_dataset.csv")
-
-    #  Analysis
 
 
 if __name__ == "__main__":
