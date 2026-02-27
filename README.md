@@ -107,8 +107,23 @@ python main.py
 ├── data/
 │   ├── raw/              # Datos crudos de la API
 │   └── processed/        # Datos procesados
+├── notebooks/            # Notebooks de análisis
 └── README.md
 ```
+
+---
+
+## 📓 Notebooks de Análisis
+
+El proyecto incluye 3 notebooks que exploran hipótesis específicas:
+
+| Notebook | Tema |
+|----------|------|
+| `01_expenditure_vs_life_expectancy.ipynb` | Relación entre gasto en salud y esperanza de vida |
+| `02_efficiency_of_health_spending.ipynb` | Eficiencia del gasto en salud entre países |
+| `03_lagged_effects_of_spending.ipynb` | Efectos rezagados del gasto en salud |
+
+Para ejecutarlos: `jupyter notebook notebooks/`
 
 ---
 
